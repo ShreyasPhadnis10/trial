@@ -1,0 +1,223 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
+#include <string.h>
+
+#define MAX 10
+
+char stack[MAX];
+int top = -1;
+
+int isEmpty()
+{
+    return (top == -1);
+}
+
+int isFull()
+{
+    return (top == MAX - 1);
+}
+
+void push(char item)
+{
+    if (isFull())
+    {
+        printf("Stack overflow. Cannot push %c\n", item);
+    }
+    else
+    {
+        top = top + 1;
+        stack[top] = item;
+    }
+}
+
+char pop()
+{
+    if (isEmpty())
+    {
+        printf("Stack is empty. Cannot pop.\n");
+        return '0';
+    }
+    else
+    {
+        char temp;
+        temp = stack[top];
+        top = top - 1;
+        return temp;
+    }
+}
+
+void display()
+{
+    if (!isEmpty())
+    {
+        printf("\nStack elements are:- \n");
+        for(int i = top; i >= 0; i--)
+        {
+            printf("%c\n", stack[i]);
+        }
+    }
+    else
+    {
+        printf("Stack is empty.\n");
+    }
+}
+
+int icp(char ch)
+{
+if(ch == '+' || ch == '-')
+{
+return 1;
+}
+if(ch == '*' || ch == '/')
+{
+return 2;
+}
+if(ch == '^')
+{
+return 3;
+}
+if(ch == '(')
+{
+return 4;
+}
+else
+{
+return 0;
+}
+}
+
+int isp(char ch)
+{
+if(ch == '+' || ch == '-')
+{
+return 1;
+}
+if(ch == '*' || ch == '/')
+{
+return 2;
+}
+if(ch == '^')
+{
+return 3;
+}
+else
+{
+return 0;
+}
+}
+
+void in_post(char inexp[])
+{
+int k = 0, i = 0;
+char tkn = inexp[i];
+char postexp[MAX];
+while(tkn!='\0')
+{
+if(isalpha(tkn))
+{
+postexp[k] = inexp[i];
+k++;
+}
+else if(tkn == '(')
+{
+push('(');
+}
+else if(tkn == ')')
+{
+while(tkn=pop() != '(')
+{
+postexp[k]=tkn;
+k++;
+}
+}
+else
+{
+while(!isEmpty() && isp(stack[top]) >= icp(tkn))
+{
+postexp[k] = pop();
+k++;
+}
+push(tkn);
+}
+
+i++;
+tkn = inexp[i];
+}
+while(!isEmpty())
+{
+postexp[k] = pop();
+k++;
+}
+printf("Postfix Expression:- %s", postexp);
+}
+
+void post_in(char post[])
+{
+    int i = 1;
+    char op1, op2;
+    char E1[MAX];
+    while (post[i] != '\0')
+    {
+        i++;
+    }
+    int l = i;
+    for (int i = 0; i < l - 1; i++)
+    {
+        char x = post[i];
+        if (isalpha(x))
+        {
+            push(x);
+        }
+        else
+        {
+            op2 = pop();
+            op1 = pop();
+            char temp[4] = {op1, x, op2, '\0'};
+            push(temp[0]);
+        }
+    }
+}
+
+int main()
+{
+    int c;
+    do
+    {
+        printf("Operations to perform:- \n1. Push\n2. Pop\n3. Display\n4. Infix to Postfix. \n5. Postfix to Infix\n");
+        scanf("%d", &c);
+        switch(c)
+        {
+        case 1:
+            printf("Enter the element to be pushed: ");
+            char item;
+            scanf(" %c", &item);
+            push(item);
+            break;
+        case 2:
+            printf("Pop: %c\n", pop());
+            break;
+        case 3:
+            display();
+            break;
+        case 4:
+            char infix[MAX];
+            printf("Enter Expression to convert: ");
+            scanf("%s", infix);
+            in_post(infix);
+            break;
+        case 5:
+            char post[MAX];
+            printf("Enter Expression to convert: ");
+            scanf("%s", post);
+            post_in(post);
+            break;
+        case 6:
+            exit(0);
+        default:
+            printf("Invalid c.\n");
+        }
+    }while(c != 5);
+
+  return 0;
+}
