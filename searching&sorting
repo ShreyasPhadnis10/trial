@@ -1,0 +1,148 @@
+#include<stdio.h>
+
+struct Student
+{
+    int rollNo;
+    char Name[10];
+    int marks;
+    int div;
+};
+
+void accept(struct Student s[10], int n);
+void display(struct Student s[10], int n);
+void linearSearch(struct Student s[10], int n, int key);
+void binarySearch(struct Student s[10], int n, int key);
+void bubbleSort(struct Student s[10], int n);
+void insertionSort(struct Student s[10], int n);
+void selectionSort(struct Student s[10], int n);
+void shellSort(struct Student s[10], int n);
+
+int main () {
+    struct Student s[10];
+    int n;
+    int key;
+
+    printf("Enter the number of students: ");
+    scanf("%d", &n);
+
+   accept(s, n);
+   display(s, n);
+
+   printf("\n\nEnter the roll number to search: ");
+   scanf("%d", &key);
+
+   linearSearch(s, n, key);
+   bubbleSort(s, n);
+   binarySearch(s, n, key);
+   insertionSort(s, n);
+   shellSort(s, n);
+
+   display(s, n);
+
+   return 0;
+}
+
+void accept(struct Student s[10], int n) {
+    for(int i = 0; i < n; i++) {
+        printf("Enter roll number: ");
+        scanf("%d", &s[i].rollNo);
+        printf("Enter name: ");
+        scanf("%s", s[i].Name);
+        printf("Enter div: ");
+        scanf("%d", &s[i].div);
+        printf("Enter percentage: ");
+        scanf("%d", &s[i].marks);
+    }
+}
+
+void display(struct Student s[10], int n) {
+    printf("The students in the class are: \n");
+    for (int i = 0; i < n; i++) {
+        printf("Roll Number: %d, Name: %s\n", s[i].rollNo, s[i].Name);
+    }
+}
+
+void linearSearch(struct Student s[10], int n, int key) {
+    for (int i = 0; i < n; i++) {
+        if (s[i].rollNo == key) {
+           printf("The student name is %s\n", s[i].Name);
+        }
+    }
+}
+
+void binarySearch(struct Student s[10], int n, int key) {
+    int low = 0;
+    int high = n;
+    int middle;
+
+    while (low <= high) {
+        middle = (low + high) / 2;
+        if (s[middle].rollNo == key) {
+            printf("The name of the student with that roll number is: %s\n", s[middle].Name);
+            break;
+        }
+        else if (s[middle].rollNo > key) {
+            high = middle - 1;
+        }
+        else {
+            low = middle + 1;
+        }
+    }
+}
+
+void bubbleSort(struct Student s[10], int n) {
+    struct Student temp;
+    for(int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i -1; j++) {
+            if(s[j].rollNo > s[j + 1].rollNo) {
+                temp = s[j + 1];
+                s[j + 1] = s[j];
+                s[j] = temp;
+            }
+        }
+    }
+}
+
+void insertionSort(struct Student s[10], int n) {
+    int i, j;
+    struct Student key;
+    for (i = 1; i < n; i++) {
+        key = s[i];
+        j = i - 1;
+        while (j >= 0 && s[j].rollNo > key.rollNo) {
+            s[j + 1] = s[j];
+            j = j - 1;
+        }
+        s[j + 1] = key;
+    }
+}
+
+void selectionSort(struct Student s[10], int n) {
+    int i, j, minIndex;
+    struct Student temp;
+    for (i = 0; i < n - 1; i++) {
+        minIndex = i;
+        for (j = i + 1; j < n; j++) {
+            if (s[j].rollNo < s[minIndex].rollNo) {
+                minIndex = j;
+            }
+        }
+        temp = s[i];
+        s[i] = s[minIndex];
+        s[minIndex] = temp;
+    }
+}
+
+void shellSort(struct Student s[10], int n) {
+    int gap, i, j;
+    struct Student temp;
+    for (gap = n / 2; gap > 0; gap /= 2) {
+        for (i = gap; i < n; i++) {
+            temp = s[i];
+            for (j = i; j >= gap && s[j - gap].rollNo > temp.rollNo; j -= gap) {
+                s[j] = s[j - gap];
+            }
+            s[j] = temp;
+        }
+    }
+}
