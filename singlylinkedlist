@@ -1,0 +1,147 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node {
+    int prn;
+    char name[20];
+    struct node* next;
+};
+ 
+
+int main() {
+struct node* head;
+head=(struct node*)malloc(sizeof(struct node));
+head -> next= NULL;
+int c;
+while(1)
+{
+printf("Choose : \n1. Create.\n2. Display.\n3. Insert.\n4. Delete.\n5.Length\n6. Exit.\nEnter your choice:- ");
+scanf("%d", &c);
+switch(c)
+{
+case 1:
+create(head);
+break;
+case 2:
+display(head);
+break;
+case 3:
+insert(head);
+break;
+case 4:
+//delete;
+break;
+case 5:
+length(head);
+break;
+
+case 6:
+exit(0);
+default:
+printf("\nPlease enter a valid option.");
+}
+}
+
+}
+void create(struct node* head)
+{
+struct node* temp;
+struct node* curr;
+temp=head;
+int choice;
+do
+{
+curr = (struct node*)malloc(sizeof(struct node));
+printf("Enter PRN:- ");
+scanf("%d", &curr->prn);
+printf("Enter Name:- ");
+scanf("%s", &curr->name);
+curr->next = NULL;
+temp->next = curr;
+temp = curr;
+printf("To continue press 1 ");
+scanf("%d", &choice);
+}while (choice == 1);
+}
+
+void display(struct node* head)
+{
+struct node* temp;
+struct node* curr;
+if (head->next==NULL)
+{
+printf("list is empty");
+}
+else
+{
+printf("|PRN\t| Name\t| Role|\n");
+curr=head->next;
+if(curr==head->next)
+{
+printf("|%d\t|%s\t|President|\n", curr->prn, curr->name);
+curr = curr->next;
+}
+    while (curr->next != NULL)
+    {
+        printf("|%d\t|%s\t|Member|\n", curr->prn, curr->name);
+        curr = curr->next;
+  }
+  if(curr->next==NULL)
+  {
+  printf("|%d\t|%s\t|Secretory|\n", curr->prn, curr->name);
+  }
+}
+}
+     
+void insert(struct node* head)
+{
+int i=1, pos;
+int k = length();
+struct node* curr;
+struct node* nnode;
+
+nnode = (struct node*)malloc(sizeof(struct node));
+
+curr = head;
+
+printf("Enter position at which the node should be inserted:- ");
+scanf("%d", &pos);
+printf("Enter PRN:- ");
+scanf("%d", &nnode->prn);
+printf("Enter Name:- ");
+scanf("%s", &nnode->name);
+if(pos>k+1)
+{
+printf("Data can't be inserted at the given position.");
+}
+else
+{
+while(curr!=NULL && i<pos)
+{
+i++;
+curr=curr->next;
+}
+nnode->next = curr->next;
+curr->next = nnode;
+}
+
+}
+
+int length(struct node* head) {
+int i=0;
+struct node* curr;
+curr=head->next;
+while (curr != NULL)
+{
+        i++;
+        curr=curr->next;
+  }
+  printf("%d\n",i);
+return i;
+}
+
+
+void delete(struct node* head){
+
+
+}
