@@ -1,0 +1,197 @@
+//Operations on Matrices 
+
+#include <stdio.h>
+
+void accept(int mat[10][10], int r, int c){
+
+for(int i = 0; i < r; i++){
+
+for(int j = 0; j < r; j++){
+
+printf("Your matrix [%d][%d]", i, j);
+
+scanf("%d", &mat[i][j]);
+
+}
+
+}
+
+}
+
+void display(int mat[10][10], int r, int c){
+
+for(int i = 0; i < r; i++){
+
+for(int j = 0; j < c; j++){
+
+printf("%d \t", mat[i][j]);
+
+}
+
+printf("\n\n");
+
+}
+
+}
+
+int add(int mat1[10][10], int mat2[10][10], int r, int c){
+
+int result[10][10];
+
+for(int i = 0; i < r; i++){
+
+for(int j = 0; j < c; j++){
+
+result[i][j] = mat1[i][j] + mat2[i][j];
+
+}
+
+}
+
+display(result, r, c);
+
+}
+
+int sub(int mat1[10][10], int mat2[10][10], int r, int c){
+
+int result[10][10];
+
+for(int i = 0; i < r; i++){
+
+for(int j = 0; j < c; j++){
+
+result[i][j] = mat1[i][j] - mat2[i][j];
+
+}
+
+}
+
+display(result, r, c);
+
+}
+
+int mul(int mat1[10][10], int mat2[10][10], int r1, int c1, int r2, int c2){
+
+int result[10][10];
+
+if(r1 == c2){
+
+for(int i = 0; i < r1; i++){
+
+for(int j = 0; j < c2; j++){
+
+result[i][j] = 0;
+
+for(int k = 0; k < r1; k++){
+
+result[i][j] += mat1[i][k] * mat2[k][j];
+
+}
+
+}
+
+}
+
+}
+
+else{
+
+printf("Matrix Multiplication is not Possible!\n");
+
+}
+
+display(result, r1, c2);
+
+}
+
+int transpose(int mat1[10][10], int mat2[10][10], int r, int c){
+
+for(int i = 0; i < r; i++){
+
+for(int j = 0; j < c; j++){
+
+mat2[j][i] = mat1[i][j];
+
+}
+
+}
+
+display(mat2, r, c);
+
+}
+
+int main(){
+
+int m1[10][10], r, c, m2[10][10], result[10][10], r1, c1, i, mulMatrix[10][10];
+
+printf("Enter no of rows and col of first matrix: \n");
+
+scanf("%d%d", &r, &c);
+
+accept(m1, r, c);
+
+display(m1, r, c);
+
+accept(m2, r, c);
+
+display(m2, r, c);
+
+do {
+
+printf("Enter your choice: 1) addition 2) subtraction 3) multiplication 4) transpose");
+
+scanf("%d", &i);
+
+switch(i){
+
+case 1:
+
+printf("The addition is : \n");
+
+add(m1, m2, r, c);
+
+break;
+
+case 2:
+
+printf("The subtraction is : \n");
+
+sub(m1, m2, r, c);
+
+break;
+
+case 3:
+
+printf("The multiplication is : \n");
+
+printf("Enter the rows and columns of second matrix");
+
+scanf("%d%d", &r1, &c1);
+
+accept(mulMatrix, r1, c1);
+
+display(mulMatrix, r1, c1);
+
+mul(m1, mulMatrix, r, c, r1, c1);
+
+break;
+
+case 4:
+
+printf("The transpose is : \n");
+
+transpose(m1, m2, r, c);
+
+break;
+
+default:
+
+printf("There was an error");
+
+}
+
+}while (1);
+
+return 0;
+
+}
