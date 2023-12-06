@@ -1,0 +1,124 @@
+#include<stdio.h>
+#include<ctype.h>
+
+#define max 5
+
+int q[max];
+int front=-1,rear=-1;
+
+int isfull();
+int isempty();
+
+void add(int item);
+int deleteItem(); // Renamed here
+void push(int item);
+void display();
+
+int main()
+{
+    int flag, item;
+    do
+    {
+        int x;
+
+        printf("\n1-Add Job to Queue\n2-Dispatch Job from Queue\nEnter: ");
+        scanf("%d", &x);
+
+        switch (x)
+        {
+            case 1:
+                printf("Enter job to add: ");
+                scanf("%d",&item);
+                add(item);
+                break;
+            case 2:
+                printf("\nDeleted Job: %d", deleteItem()); // Renamed here
+                break;
+            default:
+                printf("Enter valid input");
+        }
+
+        printf("\n\nDo you want to continue?\n\t1 - Yes\n\t0 - No\nEnter: ");
+        scanf("%d",&flag);
+
+        printf("\n");
+    } while(flag);
+    return 0;
+}
+
+int isfull()
+{
+    if(rear == max-1)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+int isempty()
+{
+    if(rear == front)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void add(int item)
+{
+    if(isfull())
+    {
+        printf("Queue is Full");
+    }
+    else
+    {
+        rear++;
+        q[rear]=item;
+        display();
+    }
+}
+
+int deleteItem() // Renamed here
+{
+   int item;
+   if(isempty())
+   {
+       printf("Queue is empty");
+       return -1;
+   }
+   else
+   {
+       front++;
+       item=q[front];
+
+       for(int i=front+1;i<=rear;i++)
+       {
+           q[i-1] = q[i]; // Shifting elements one position to the left after deletion.
+           printf("%d ", q[i-1]);
+       }
+
+       rear--; // Decreasing rear as we have deleted one element from queue.
+       return item;
+   }
+}
+
+void display()
+{
+   if (isempty())
+   {
+      printf("Queue is empty.\n");
+      return;
+   }
+
+   for(int i=front+1;i<=rear;i++) // Start from front + 1 as queue starts after front index.
+   {
+      printf("%d ", q[i]);
+   }
+}
+
