@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <ctype.h>
+#include <math.h>
+
+#define max 10
+
+int top = -1;
+int stk[max];
+
+int isfull() {
+    return top == max - 1;
+}
+
+int isempty() {
+    return top == -1;
+}
+
+void push(int item) {
+    if (!isfull()) {
+        top = top + 1;
+        stk[top] = item;
+        printf("%d pushed onto the stack.\n", item);
+    } else {
+        printf("Stack is full. Cannot push %d.\n", item);
+    }
+}
+
+int pop() {
+    if (!isempty()) {
+        int item = stk[top];
+        top = top - 1;
+        return item;
+    }
+}
+   
+int calc(int a,int b,char op){
+    int ans;
+    switch(op)
+    {
+case '+':
+ans=a+b;
+break;
+case '-':
+ans=a-b;
+break;
+case '*':
+ans=a*b;
+break;
+case '/':
+ans=a/b;
+break;
+case'^':
+ans=pow(a,b);
+default:;
+    }
+    return ans;
+}  
+   
+   
+
+void eval(char postfix[20]){
+int push_ele,op1,op2,ans;
+for(int i=0; postfix[i] != '\0';i++){
+if(isalpha(postfix[i])){
+printf("\nEnter value of %c:",postfix[i]);
+scanf("%d",&push_ele);
+push(push_ele);
+}
+else{
+op2 = pop();
+op1 = pop();
+ans = calc(op1,op2,postfix[i]);
+push(ans);
+}
+}
+printf("\n Evalutation is: %d\n",stk[top]);
+}
+
+
+
+int main() {
+    int choice, item;
+
+    do {
+        printf("1. Push\n");
+        printf("2. Pop\n");
+        printf("3. Enter Postfix Expression: \n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+            case 1:
+                printf("Enter item to push: ");
+                scanf("%d", &item);
+                push(item);
+                break;
+            case 2:
+                item = pop();
+                if (item != -1) {
+                    printf("%d popped from the stack.\n", item);
+                }
+                break;
+            case 3:
+               char postfix[20];
+                printf("\nPostfix expression: ");
+                  scanf("%s", postfix);
+                  eval(postfix);
+                break;
+        }
+    } while (choice != 3);
+
+}
+
+
+
+
