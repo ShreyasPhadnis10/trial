@@ -1,0 +1,150 @@
+ #include <stdio.h>
+void inputMatrix(int matrix[10][10], int rows, int columns)
+{
+printf("Enter the elements of the matrix:\n");
+for (int i = 0; i < rows; i++)
+{
+for (int j = 0; j < columns; j++)
+{
+scanf("%d", &matrix[i][j]);
+}
+}
+}
+void displayMatrix(int matrix[10][10], int rows, int columns)
+{
+
+printf("The entered matrix is:\n");
+for (int i = 0; i < rows; i++)
+{
+for (int j = 0; j < columns; j++)
+{
+printf("%d\t", matrix[i][j]);
+}
+printf("\n");
+}
+}
+void toCompactForm(int matrix[10][10], int rows, int columns, int compact[20][3])
+{
+int k = 1;
+for (int i = 0; i < rows; i++)
+{
+for (int j = 0; j < columns; j++)
+{
+if (matrix[i][j] != 0)
+{
+compact[k][0] = i;
+compact[k][1] = j;
+compact[k][2] = matrix[i][j];
+k++;
+}
+}
+}
+compact[0][0] = rows;
+compact[0][1] = columns;
+compact[0][2] = k - 1;
+}
+void displayCompactForm(int compact[20][3])
+{
+for (int i = 0; i <= compact[0][2]; i++)
+{
+for (int j = 0; j < 3; j++)
+{
+printf("%d\t", compact[i][j]);
+}
+printf("\n");
+}
+}
+void simpleMatrixTranspose(int compact[20][3], int transpose[20][3])
+{
+int k = 1;
+for (int i = 0; i < compact[0][1]; i++)
+{
+for (int j = 1; j <= compact[0][2]; j++)
+{
+if (compact[j][1] == i)
+{
+transpose[k][0] = compact[j][1];
+transpose[k][1] = compact[j][0];
+transpose[k][2] = compact[j][2];
+k++;
+
+}
+}
+}
+transpose[0][0] = compact[0][1];
+transpose[0][1] = compact[0][0];
+transpose[0][2] = compact[0][2];
+}
+void fastMatrixTranspose(int compact[20][3], int transpose[20][3])
+{
+int rowTerm[20];
+int rowPos[20];
+int loc;
+for (int i = 0; i < compact[0][1]; i++)
+rowTerm[i] = 0;
+for (int i = 1; i <= compact[0][2]; i++)
+rowTerm[compact[i][1]]++;
+rowPos[0] = 1;
+for (int i = 1; i < compact[0][1]; i++)
+rowPos[i] = rowPos[i - 1] + rowTerm[i - 1];
+for (int j = 1; j <= compact[0][2]; j++)
+{
+loc = rowPos[compact[j][1]];
+transpose[loc][0] = compact[j][1];
+transpose[loc][1] = compact[j][0];
+transpose[loc][2] = compact[j][2];
+rowPos[compact[j][1]]++;
+}
+transpose[0][0] = compact[0][1];
+transpose[0][1] = compact[0][0];
+transpose[0][2] = compact[0][2];
+}
+
+int main()
+{
+int matrix[10][10], rows, columns, compact[20][3], transpose[20][3];
+int choice;
+printf("Enter the number of rows in the matrix: ");
+scanf("%d", &rows);
+printf("Enter the number of columns in the matrix: ");
+scanf("%d", &columns);
+inputMatrix(matrix, rows, columns);
+displayMatrix(matrix, rows, columns);
+while (1) {
+printf("\nMenu\n");
+printf("1.Convert to Compact Form\n");
+printf("2.Display Compact Form\n");
+printf("3.Simple Matrix Transpose\n");
+printf("4.Fast Matrix Transpose\n");
+printf("5.Exit\n");
+printf("Enter your choice: ");
+scanf("%d", &choice);
+switch (choice) {
+
+case 1:
+toCompactForm(matrix, rows, columns, compact);
+printf("Compact form of the matrix has been generated.\n");
+break;
+case 2:
+displayCompactForm(compact);
+break;
+case 3:
+simpleMatrixTranspose(compact, transpose);
+printf("Simple transpose of the matrix:\n");
+displayCompactForm(transpose);
+break;
+case 4:
+fastMatrixTranspose(compact, transpose);
+printf("\nFast Transpose\n\n");
+printf("Fast transpose of the matrix is:\n");
+displayCompactForm(transpose);
+break;
+case 5:
+printf("Exiting the program.\n");
+return 0;
+default:
+printf("Invalid choice. Please try again.\n");
+}
+}
+}
+
